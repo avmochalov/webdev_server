@@ -13,7 +13,7 @@ const server = http.createServer((request, response) => {
     return;
   }
 
-  if (!Boolean(url.searchParams.get("hello"))) {
+  if (request.url === "/?hello" && !Boolean(url.searchParams.get("hello"))) {
     response.statusCode = 400;
     response.statusMessage = "Bad Request";
     response.header = "ContentType: text/plain";
@@ -22,7 +22,7 @@ const server = http.createServer((request, response) => {
 
     return;
   }
-  if (Boolean(url.searchParams.get("hello"))) {
+  if ( Boolean(url.searchParams.get("hello"))) {
     response.status = 200;
     response.statusMessage = "OK";
     response.header = "ContentType: text/plain";
@@ -31,6 +31,11 @@ const server = http.createServer((request, response) => {
 
     return;
   }
+  response.statusCode = 500;
+  response.statusMessage = "Internal Server Error";
+  response.end();
+
+  return;
 });
 
 server.listen(process.env.SERVER_PORT, () => {
